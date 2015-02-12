@@ -1,72 +1,101 @@
 #Makefile by Ketor 
+#edited by Julio
 CC        = gcc -D__USE_FILE_OFFSET64 -DHAVE_CONFIG_H -I. -D__CEPH__ -D_FILE_OFFSET_BITS=64 -D_REENTRANT -D_THREAD_SAFE -D__STDC_FORMAT_MACROS -D_GNU_SOURCE -fno-strict-aliasing -fsigned-char -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free -g -DPIC 
 CPP       = g++ -D__USE_FILE_OFFSET64 -DHAVE_CONFIG_H -I. -D__CEPH__ -D_FILE_OFFSET_BITS=64 -D_REENTRANT -D_THREAD_SAFE -D__STDC_FORMAT_MACROS -D_GNU_SOURCE -fno-strict-aliasing -fsigned-char -Wno-invalid-offsetof -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free -g -DPIC 
 
 CEPH_INCLUDE = -I./ -I./global
+BUILD = build
 CFLAGS   = $(CEPH_INCLUDE)
 CLIBS    = 
 
-%.o:%.cc
+../$(BUILD)/%.o:%.cc
 	$(CPP) -c $(CFLAGS) $^ -o $@
 
-auth/%.o:auth/%.cc
+../$(BUILD)/%.o:global/%.cc
 	$(CPP) -c $(CFLAGS) $^ -o $@
 
-auth/cephx/%.o:auth/cephx/%.cc
+../$(BUILD)/%.o:auth/%.cc
 	$(CPP) -c $(CFLAGS) $^ -o $@
 
-auth/none/%.o:auth/none/%.cc
+../$(BUILD)/%.o:auth/cephx/%.cc
 	$(CPP) -c $(CFLAGS) $^ -o $@
 
-include/%.o:include/%.cc
+../$(BUILD)/%.o:auth/none/%.cc
 	$(CPP) -c $(CFLAGS) $^ -o $@
 
-common/%.o:common/%.cc
+../$(BUILD)/%.o:include/%.cc
 	$(CPP) -c $(CFLAGS) $^ -o $@
 
-crush/%.o:crush/%.cc
+../$(BUILD)/%.o:common/%.cc
 	$(CPP) -c $(CFLAGS) $^ -o $@
 
-mon/%.o:mon/%.cc
+../$(BUILD)/%.o:crush/%.cc
 	$(CPP) -c $(CFLAGS) $^ -o $@
 
-osdc/%.o:osdc/%.cc
+../$(BUILD)/%.o:mon/%.cc
 	$(CPP) -c $(CFLAGS) $^ -o $@
 
-common/%.o:common/%.c
+../$(BUILD)/%.o:osdc/%.cc
+	$(CPP) -c $(CFLAGS) $^ -o $@
+
+../$(BUILD)/%.o:common/%.c
 	$(CC) -c $(CFLAGS) $^ -o $@
 
-crush/%.o:crush/%.c
+../$(BUILD)/%.o:crush/%.c
 	$(CC) -c $(CFLAGS) $^ -o $@
 
-mds/%.o:mds/%.c
-	$(CC) -c $(CFLAGS) $^ -o $@
-
-dokan/%.o:dokan/%.c
+../$(BUILD)/%.o:dokan/%.c
+	$(CC) -w -c $(CFLAGS) $^ -o $@
+	
+../$(BUILD)/%.o:dokan/%.cc
 	$(CC) -w -c $(CFLAGS) $^ -o $@
 
-ALL:ceph-dokan.exe
+../$(BUILD)/%.o:log/%.cc
+	$(CC) -w -c $(CFLAGS) $^ -o $@
 
-OBJECTS=libcephfs.o global/global_context.o global/global_init.o global/pidfile.o global/signal_handler.o common/types.o common/io_priority.o common/hobject.o common/ceph_frag.o common/Readahead.o common/histogram.o include/uuid.o common/ceph_fs.o common/bloom_filter.o common/ceph_hash.o common/ceph_strings.o common/addr_parsing.o common/assert.o  common/BackTrace.o  common/buffer.o  common/ceph_argparse.o  common/ceph_context.o common/lockdep.o common/Clock.o common/ceph_crypto.o  common/code_environment.o  common/common_init.o  common/ConfUtils.o  common/DecayCounter.o  common/dout.o  common/entity_name.o  common/environment.o  common/errno.o  common/fd.o  common/Finisher.o  common/Formatter.o  common/hex.o common/LogEntry.o  common/Mutex.o  common/page.o  common/perf_counters.o  common/PrebufferedStreambuf.o  common/RefCountedObj.o    common/signal.o  common/simple_spin.o  common/snap_types.o  common/str_list.o  common/strtol.o  common/Thread.o  common/Throttle.o  common/Timer.o  common/util.o  common/config.o  common/armor.o common/crc32c.o common/crc32c-intel.o common/TrackedOp.o common/escape.o common/mime.o common/safe_io.o common/sctp_crc32.o common/secret.o common/utf8.o common/LogClient.o common/version.o log/Log.o  log/SubsystemMap.o log/Log.o  log/SubsystemMap.o auth/AuthAuthorizeHandler.o auth/AuthClientHandler.o auth/AuthMethodList.o auth/AuthServiceHandler.o auth/AuthSessionHandler.o auth/Crypto.o auth/KeyRing.o auth/RotatingKeyRing.o auth/none/AuthNoneAuthorizeHandler.o auth/cephx/CephxSessionHandler.o auth/cephx/CephxAuthorizeHandler.o auth/cephx/CephxProtocol.o   auth/cephx/CephxClientHandler.o auth/cephx/CephxServiceHandler.o auth/cephx/CephxKeyServer.o  crush/CrushCompiler.o crush/CrushWrapper.o crush/builder.o crush/crush.o crush/hash.o crush/mapper.o common/hobject.o msg/simple/Accepter.o msg/simple/PipeConnection.o msg/simple/DispatchQueue.o msg/Message.o msg/Messenger.o msg/msg_types.o msg/simple/Pipe.o msg/simple/SimpleMessenger.o osd/HitSet.o osd/OSDMap.o osd/OpRequest.o osd/osd_types.o mon/MonClient.o mon/MonMap.o mon/MonCap.o mds/flock.o mds/MDSMap.o mds/mdstypes.o mds/inode_backtrace.o osdc/Filer.o osdc/Journaler.o osdc/ObjectCacher.o osdc/Objecter.o osdc/Striper.o client/Client.o client/ClientSnapRealm.o client/Dentry.o client/Inode.o client/MetaRequest.o client/MetaSession.o client/Trace.o #include/uuid.o
+../$(BUILD)/%.o:msg/simple/%.cc
+	$(CC) -w -c $(CFLAGS) $^ -o $@
 
-libcephfs.dll:$(OBJECTS)
-	$(CPP) $(CFLAGS) $(CLIBS) -shared -o $@ $^ -lws2_32 -lpthread
+../$(BUILD)/%.o:msg/%.cc
+	$(CC) -w -c $(CFLAGS) $^ -o $@
+
+../$(BUILD)/%.o:msg/async/%.cc
+	$(CC) -w -c $(CFLAGS) $^ -o $@
+
+../$(BUILD)/%.o:osd/%.cc
+	$(CC) -w -c $(CFLAGS) $^ -o $@
+
+../$(BUILD)/%.o:os/%.cc
+	$(CC) -w -c $(CFLAGS) $^ -o $@
+
+../$(BUILD)/%.o:mds/%.cc
+	$(CC) -w -c $(CFLAGS) $^ -o $@
+
+../$(BUILD)/%.o:client/%.cc
+	$(CC) -w -c $(CFLAGS) $^ -o $@
+
+ALL:../bin/ceph-dokan.exe
+
+OBJECTS=../$(BUILD)/libcephfs.o ../$(BUILD)/global_context.o ../$(BUILD)/global_init.o ../$(BUILD)/pidfile.o ../$(BUILD)/signal_handler.o ../$(BUILD)/types.o ../$(BUILD)/io_priority.o ../$(BUILD)/hobject.o ../$(BUILD)/ceph_frag.o ../$(BUILD)/Readahead.o ../$(BUILD)/histogram.o ../$(BUILD)/uuid.o ../$(BUILD)/ceph_fs.o ../$(BUILD)/bloom_filter.o ../$(BUILD)/ceph_hash.o ../$(BUILD)/ceph_strings.o ../$(BUILD)/addr_parsing.o ../$(BUILD)/assert.o  ../$(BUILD)/BackTrace.o  ../$(BUILD)/buffer.o  ../$(BUILD)/ceph_argparse.o  ../$(BUILD)/ceph_context.o ../$(BUILD)/lockdep.o ../$(BUILD)/Clock.o ../$(BUILD)/ceph_crypto.o  ../$(BUILD)/code_environment.o  ../$(BUILD)/common_init.o  ../$(BUILD)/ConfUtils.o  ../$(BUILD)/DecayCounter.o  ../$(BUILD)/dout.o  ../$(BUILD)/entity_name.o  ../$(BUILD)/environment.o  ../$(BUILD)/errno.o  ../$(BUILD)/fd.o  ../$(BUILD)/Finisher.o  ../$(BUILD)/Formatter.o  ../$(BUILD)/hex.o ../$(BUILD)/LogEntry.o  ../$(BUILD)/Mutex.o  ../$(BUILD)/page.o  ../$(BUILD)/perf_counters.o  ../$(BUILD)/PrebufferedStreambuf.o  ../$(BUILD)/RefCountedObj.o    ../$(BUILD)/signal.o  ../$(BUILD)/simple_spin.o  ../$(BUILD)/snap_types.o  ../$(BUILD)/str_list.o  ../$(BUILD)/strtol.o  ../$(BUILD)/Thread.o  ../$(BUILD)/Throttle.o  ../$(BUILD)/Timer.o  ../$(BUILD)/util.o  ../$(BUILD)/config.o  ../$(BUILD)/armor.o ../$(BUILD)/crc32c.o ../$(BUILD)/crc32c-intel.o ../$(BUILD)/TrackedOp.o ../$(BUILD)/escape.o ../$(BUILD)/mime.o ../$(BUILD)/safe_io.o ../$(BUILD)/sctp_crc32.o ../$(BUILD)/secret.o ../$(BUILD)/utf8.o ../$(BUILD)/LogClient.o ../$(BUILD)/version.o ../$(BUILD)/Log.o  ../$(BUILD)/SubsystemMap.o ../$(BUILD)/Log.o  ../$(BUILD)/SubsystemMap.o ../$(BUILD)/AuthAuthorizeHandler.o ../$(BUILD)/AuthClientHandler.o ../$(BUILD)/AuthMethodList.o ../$(BUILD)/AuthServiceHandler.o ../$(BUILD)/AuthSessionHandler.o ../$(BUILD)/Crypto.o ../$(BUILD)/KeyRing.o ../$(BUILD)/RotatingKeyRing.o ../$(BUILD)/AuthNoneAuthorizeHandler.o ../$(BUILD)/CephxSessionHandler.o ../$(BUILD)/CephxAuthorizeHandler.o ../$(BUILD)/CephxProtocol.o   ../$(BUILD)/CephxClientHandler.o ../$(BUILD)/CephxServiceHandler.o ../$(BUILD)/CephxKeyServer.o  ../$(BUILD)/CrushCompiler.o ../$(BUILD)/CrushWrapper.o ../$(BUILD)/builder.o ../$(BUILD)/crush.o ../$(BUILD)/hash.o ../$(BUILD)/mapper.o ../$(BUILD)/hobject.o ../$(BUILD)/Accepter.o ../$(BUILD)/PipeConnection.o ../$(BUILD)/DispatchQueue.o ../$(BUILD)/Message.o ../$(BUILD)/Messenger.o ../$(BUILD)/msg_types.o ../$(BUILD)/Pipe.o ../$(BUILD)/SimpleMessenger.o ../$(BUILD)/HitSet.o ../$(BUILD)/OSDMap.o ../$(BUILD)/OpRequest.o ../$(BUILD)/osd_types.o ../$(BUILD)/MonClient.o ../$(BUILD)/MonMap.o ../$(BUILD)/MonCap.o ../$(BUILD)/flock.o ../$(BUILD)/MDSMap.o ../$(BUILD)/mdstypes.o ../$(BUILD)/inode_backtrace.o ../$(BUILD)/Filer.o ../$(BUILD)/Journaler.o ../$(BUILD)/ObjectCacher.o ../$(BUILD)/Objecter.o ../$(BUILD)/Striper.o ../$(BUILD)/Client.o ../$(BUILD)/ClientSnapRealm.o ../$(BUILD)/Dentry.o ../$(BUILD)/Inode.o ../$(BUILD)/MetaRequest.o ../$(BUILD)/MetaSession.o ../$(BUILD)/Trace.o ../$(BUILD)/uuid.o
+
+../bin/libcephfs.dll:$(OBJECTS)
+	$(CPP) $(CFLAGS) $(CLIBS) -shared -o $@ $^ -lws2_32 -lpthreadGCE2
 	@echo "**************************************************************"
 	@echo "MAKE "$@" FINISH"
 	@echo "**************************************************************"
 
-test-cephfs.exe:test_cephfs.o libcephfs.dll
-	$(CPP) $(CFLAGS) $(CLIBS) -o $@ $^ -lws2_32 -lpthread -unicode -static-libgcc -static-libstdc++
+../bin/test-cephfs.exe:../$(BUILD)/test_cephfs.o ../bin/libcephfs.dll
+	$(CPP) $(CFLAGS) $(CLIBS) -o $@ $^ -lws2_32 -lpthreadGCE2 -unicode -static-libgcc -static-libstdc++
 	@echo "**************************************************************"
 	@echo "MAKE "$@" FINISH"
 	@echo "**************************************************************"
 
-ceph-dokan.exe:dokan/ceph_dokan.o dokan/posix_acl.o dokan/dokan.lib libcephfs.dll
-	$(CPP) $(CFLAGS) $(CLIBS) -o $@ $^ -lws2_32 -lpthread -unicode 
+../bin/ceph-dokan.exe:../$(BUILD)/ceph_dokan.o ../$(BUILD)/posix_acl.o dokan/dokan.lib ../bin/libcephfs.dll
+	$(CPP) $(CFLAGS) $(CLIBS) -o $@ $^ -lws2_32 -lpthreadGCE2 -unicode 
 	@echo "**************************************************************"
 	@echo "MAKE "$@" FINISH"
 	@echo "**************************************************************"
 
 clean:
-	rm -f $(OBJECTS) dokan/*.o *.o libcephfs.dll ceph-dokan.exe test-cephfs.exe
+	rm -f $(OBJECTS) dokan/*.o *.o ../bin/libcephfs.dll ../bin/ceph-dokan.exe ../bin/test-cephfs.exe
 
