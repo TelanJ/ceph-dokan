@@ -97,5 +97,5 @@ OBJECTS=../$(BUILD)/libcephfs.o ../$(BUILD)/global_context.o ../$(BUILD)/global_
 	@echo "**************************************************************"
 
 clean:
-	rm -f $(OBJECTS) dokan/*.o *.o ../bin/libcephfs.dll ../bin/ceph-dokan.exe ../bin/test-cephfs.exe
+	rm -f $(OBJECTS) dokan/*.o ../$(BUILD)/*.o ../bin/libcephfs.dll ../bin/ceph-dokan.exe ../bin/test-cephfs.exe
 
